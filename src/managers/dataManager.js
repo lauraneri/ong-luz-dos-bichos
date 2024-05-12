@@ -10,12 +10,13 @@ class DataManager {
    * @returns {Array<Array<*>>}
    */
   static createMatrix(data) {
-    if (!Array.isArray(data)) return [[]]
-    if (data.length === 0) return [[]]
+    if (!Array.isArray(data)) return [[]];
+    if (data.length === 0) return [[]];
 
-    if (!data.every(item => DataManager.isObject(item))) throw new TypeError('Elementos de "data" devem ser do tipo Array')
+    if (!data.every(item => DataManager.isObject(item))) 
+      throw new TypeError('Elementos de "data" devem ser do tipo Array');
     
-    const header = Object.keys(data[0])
+    const header = Object.keys(data[0]);
     const array2D = data.map((elemJson) => {
       const newLine = new Array(header.length).fill('');
       const keys = Object.keys(elemJson);
@@ -27,7 +28,7 @@ class DataManager {
       return newLine;
     });
 
-    return [header, ...array2D]
+    return [header, ...array2D];
   }
 
   /**
@@ -36,10 +37,11 @@ class DataManager {
    * @returns {Array<Object>}
    */
   static createJson(arrayData) {
-    if (!Array.isArray(arrayData)) return []
+    if (!Array.isArray(arrayData)) return [];
 
-    const header = arrayData[0]
-    return arrayData.slice(1).map((row) => Object.fromEntries(row.map((item, id) => [header[id], item])))
+    const header = arrayData[0];
+    return arrayData.slice(1)
+      .map((row) => Object.fromEntries(row.map((item, id) => [header[id], item])));
   }
 
   /**
@@ -50,11 +52,12 @@ class DataManager {
    */
   static createMap(arrayData, primaryKey) {
     if (!arrayData) new Map();
-    const jsonData = DataManager.createJson(arrayData)
+    const jsonData = DataManager.createJson(arrayData);
 
-    return new Map(jsonData.map(item => {const pk = item[primaryKey]; delete item[primaryKey]; return [pk, item]}))
+    return new Map(jsonData.map(item => {
+      const pk = item[primaryKey]; delete item[primaryKey]; return [pk, item];
+    }));
   }
-
 }
 
 module.exports = DataManager

@@ -1,8 +1,7 @@
-/* eslint-disable no-undef */
 const DataMock = require('./data.mock')
-const DataManager = require('../../managers/dataManager')
+const DataManager = require('../../src/managers/dataManager')
 
-describe('Spread', () => {
+describe('DataManager', () => {
   const dataMock = new DataMock();
   test.each(dataMock.isObject())('Check isObject: %s', (testName, item) => {
     const result = DataManager.isObject(item.arrayData);

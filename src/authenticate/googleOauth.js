@@ -30,7 +30,7 @@ class GoogleOauth {
       const credentials = JSON.parse(content);
       return google.auth.fromJSON(credentials);
     } catch (err) {
-      console.error(err)
+      console.error(err);
       return null;
     }
   }
@@ -75,4 +75,4 @@ class GoogleOauth {
   }
 }
 
-module.exports = GoogleOauth
+module.exports = GoogleOauth;
