@@ -5,7 +5,7 @@ Projeto de desenvolvimento de aplicação web para a ONG Santuário Luz dos Bich
 
 ### Instalar dependências
 ```bash
-npm installs
+npm install
 ```
 
 ### Criar 
