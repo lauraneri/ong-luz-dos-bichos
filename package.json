@@ -14,7 +14,11 @@
     "test": "jest",
     "lint": "eslint --fix .",
     "build": "webpack",
-    "deploy:webapp": "npm run deploy:script && node ./deploy/webapp.cjs",
-    "deploy:script": "npm run build && node ./deploy/script.cjs"
+    "copyClasp": "node ./create/copyClasp.cjs",
+    "create": "npx clasp create --title my_project --type sheets --rootDir ./dist && npm run copyClasp",
+    "predeploy": "node ./deploy/prePostDeploy.cjs",
+    "deploy:webapp": "npm run deploy && node ./deploy/webapp.cjs",
+    "deploy": "npm run build && node ./deploy/script.cjs",
+    "postdeploy": "npm run predeploy --reset"
   }
 }

@@ -8,12 +8,13 @@ class Spreadsheet {
    */
   constructor(auth = null, local = true) {
     this.local = local;
+    // Placeholder for pre-deploy (set-begin)
     if (local) {
       const {google} = require('googleapis');
       this.sheets = google.sheets({version: 'v4', auth});
-    } else {
       this.sheetsApi = new SheetsApi(this);
     }
+    // Placeholder for pre-deploy (set-end)
   }
 
   /**
@@ -126,28 +127,6 @@ class Spreadsheet {
     throw new TypeError('Parametro "sheetNames" deve ser do tipo Array<String> ou String');
   }
 
-  /**
-   * Sobrescrever dados na aba atual
-   * @param {Array<Array<*>>} dataMatrix Matriz 2D de dados
-   * @returns {Promise<void>}
-   */
-  async overwrite(dataMatrix) {
-    const overwriteRequest = {
-      spreadsheetId: this.spreadsheetId,
-      range: this.sheetName,
-      valueInputOption: 'USER_ENTERED',
-      resource: { values: dataMatrix },
-      includeValuesInResponse: true,
-    };
-    await this.sheets.spreadsheets.values.update(overwriteRequest);
-  }
 }
 
-function newSpreadsheet(args) {
-  return new Spreadsheet(args, false);
-}
-
-module.exports = {
-  Spreadsheet,
-  newSpreadsheet
-};
+module.exports = Spreadsheet

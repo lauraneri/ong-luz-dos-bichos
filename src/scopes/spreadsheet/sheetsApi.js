@@ -57,6 +57,4 @@ class SheetsApi {
   }
 }
 
-module.exports = {
-  SheetsApi
-};
+module.exports = SheetsApi;

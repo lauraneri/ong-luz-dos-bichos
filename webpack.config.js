@@ -52,6 +52,10 @@ module.exports = {
           from: getSrcPath('../page'),
           to: '[name][ext]',
         },
+        {
+          from: getSrcPath('../src/triggers/onOpen.js'),
+          to: '[name][ext]',
+        },
       ],
     }),
     new GasPlugin(),
