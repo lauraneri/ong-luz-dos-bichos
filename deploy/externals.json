@@ -1,0 +1,4 @@
+[
+  { "local": "// Placeholder for pre-deploy (set-begin)", "cloud": "/** // Placeholder for pre-deploy (reset-begin)" },
+  { "local": "// Placeholder for pre-deploy (set-end)", "cloud": "// Placeholder for pre-deploy (reset-end) */" }
+]
