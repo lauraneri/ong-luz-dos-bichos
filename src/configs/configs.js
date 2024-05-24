@@ -5,7 +5,7 @@ class Configs {
     
     this.envs = {
       dev: {
-        members: '1no0sULneiBUxhht5IHa2G-s-z6EQ33X_fqbPKlMhn1M',
+        members: '1r1KWffk6nb5i2gWHCCFKs_KUqOyHDCjDweoqDZ-eh4o',
         schedule: 'sch-xxxx'
       },
       prod: {
@@ -14,6 +14,13 @@ class Configs {
       }
     }
 
+  }
+
+  static getActiveSpreadsheetId() {
+    if (!this || this.local) 
+      throw new Error('Método indisponível para execução local')
+
+    return SpreadsheetApp.getActive().getId();
   }
 
   /**
