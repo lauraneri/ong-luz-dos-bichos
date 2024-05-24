@@ -2,7 +2,7 @@ function onOpen() {
   const ui = SpreadsheetApp.getUi();
 
   ui.createMenu('Pessoal')
-    .addItem('1. Atualizar escalas', 'atualizarEscalas')
+    .addItem('1. Atualizar escalas', 'pessoalRegistrarOuAtualizarCadastro')
     .addSeparator()
     .addToUi();
 
