@@ -1,11 +1,11 @@
 class Configs {
-  constructor() {
-
+  constructor(localDevSwitch = true) {
+    this.local = localDevSwitch;
     this.env = 'dev'
     
     this.envs = {
       dev: {
-        members: '1r1KWffk6nb5i2gWHCCFKs_KUqOyHDCjDweoqDZ-eh4o',
+        people: '1r1KWffk6nb5i2gWHCCFKs_KUqOyHDCjDweoqDZ-eh4o',
         schedule: 'sch-xxxx'
       },
       prod: {
@@ -34,6 +34,10 @@ class Configs {
       return spreadsheetId
   }
 
+  getUserEmail() {
+    if (this.local) return ''
+    return Session.getActiveUser().getEmail();
+  }
 }
 
 module.exports = Configs

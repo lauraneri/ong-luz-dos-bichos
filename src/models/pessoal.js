@@ -6,7 +6,7 @@ class Pessoal {
     this.configs = new Configs()
     this.spreadsheetManager = new SpreadsheetManager()
     this.spreadsheetManager.setSheetName(sheetName)
-    this.spreadsheetManager.setSpreadsheetId(this.configs.getSpreadsheetIdByName('members'))
+    this.spreadsheetManager.setSpreadsheetId(this.configs.getSpreadsheetIdByName('people'))
   }
 
   setSheetName(newSheetName) {

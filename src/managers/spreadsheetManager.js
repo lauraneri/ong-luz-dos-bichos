@@ -98,7 +98,7 @@ class SpreadsheetManager {
     const ss = SpreadsheetApp.openById(this.spreadsheetId)
     const sheet = ss.getSheetByName(this.sheetName);
     const lastRow = sheet.getLastRow();
-    sheet.getRange(lastRow + 1, 1, dataContent.length, dataContent[0].length).setValues(dataContent);
+    sheet.getRange(lastRow + 1, 1, matrixToAppend.length, matrixToAppend[0].length).setValues(matrixToAppend);
     SpreadsheetApp.flush()
   }
 
@@ -130,7 +130,7 @@ class SpreadsheetManager {
     const dataRange = sheet.getRange(2, 1, lastRow, lastColumn);
     dataRange.clear({ commentsOnly: true, contentsOnly: true, formatOnly: true, validationsOnly: true });
 
-    sheet.getRange(2, 1, updatedDataMatrix.length, updatedDataMatrix[0].length).setValues(updatedDataMatrix);
+    sheet.getRange(2, 1, matrixToOverwrite.length, matrixToOverwrite[0].length).setValues(matrixToOverwrite);
     SpreadsheetApp.flush()
   }
 
