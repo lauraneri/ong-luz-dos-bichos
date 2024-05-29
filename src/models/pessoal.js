@@ -25,8 +25,8 @@ class Pessoal {
     return await this.spreadsheetManager.overwrite(data)
   }
 
-  async update(data) {
-    return await this.spreadsheetManager.update(data)
+  async update(data, filters, newValue) {
+    return await this.spreadsheetManager.update(data, filters, newValue)
   }
 
 }

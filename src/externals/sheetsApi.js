@@ -62,6 +62,21 @@ class SheetsApi {
     await this.sheets.spreadsheets.values.update(overwriteRequest);
   }
 
+  /**
+   * @summary Limpar apenas dados da aba atual
+   * @async
+   * @return {Promise<void>}
+   */
+  async clearContent() {
+    await this.authenticate()
+    const clearRequest = {
+      spreadsheetId: this.spreadsheetId,
+      range: this.sheetName,
+      auth: this.oauth2Client,
+    };
+    await this.sheets.spreadsheets.values.clear(clearRequest);
+  }
+
     /**
    * @summary Obtem ID da aba corrente
    * @async
@@ -135,7 +150,7 @@ class SheetsApi {
       });
     }
 
-    await this.spreadsheet.batchUpdate({
+    await this.sheets.spreadsheets.batchUpdate({
       spreadsheetId: this.spreadsheetId,
       resource: { requests: updateRequests },
     });
