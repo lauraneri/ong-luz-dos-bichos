@@ -81,12 +81,17 @@ class SpreadsheetManager {
    * @returns {Promise<void>}
    */
   async append(data) {
-    const updatedDataMatrix = DataManager.createMatrix(data);
-    const dataContent = updatedDataMatrix.slice(1);
+
+    const targetData = await this.read('array')
+    const targetHeader = targetData[0]
+    if (!targetHeader) 
+      throw new Error(`Aba alvo ${this.sheetName} não inclui cabeçalho`)
+
+    const matrixToAppend = data.map(dataLine => targetHeader.map(headerField => dataLine[headerField]))
 
     if (this.local) {
       const sheetsApi = new SheetsApi(this)
-      await sheetsApi.append(dataContent)
+      await sheetsApi.append(matrixToAppend)
       return
     } 
 
@@ -94,6 +99,7 @@ class SpreadsheetManager {
     const sheet = ss.getSheetByName(this.sheetName);
     const lastRow = sheet.getLastRow();
     sheet.getRange(lastRow + 1, 1, dataContent.length, dataContent[0].length).setValues(dataContent);
+    SpreadsheetApp.flush()
   }
 
   /**
@@ -101,17 +107,31 @@ class SpreadsheetManager {
    * @param {Array<Object>} data Dados para sobrescrita
    */
   async overwrite(data) {
-    const updatedDataMatrix = DataManager.createMatrix(data);
+
+    const targetData = await this.read('array')
+    const targetHeader = targetData[0]
+    if (!targetHeader) 
+      throw new Error(`Aba alvo ${this.sheetName} não inclui cabeçalho`)
+
+    const matrixToOverwrite = data.map(dataLine => targetHeader.map(headerField => dataLine[headerField]))
 
     if (this.local) {
       const sheetsApi = new SheetsApi(this)
-      response = await sheetsApi.append(updatedDataMatrix)
+      await sheetsApi.clearContent();
+      await sheetsApi.overwrite([targetHeader, ...matrixToOverwrite])
       return
     } 
 
     const ss = SpreadsheetApp.openById(this.spreadsheetId)
     const sheet = ss.getSheetByName(this.sheetName);
-    sheet.getRange(1, 1, updatedDataMatrix.length, updatedDataMatrix[0].length).setValues(updatedDataMatrix);
+    
+    const lastRow = sheet.getLastRow();
+    const lastColumn = sheet.getLastColumn();
+    const dataRange = sheet.getRange(2, 1, lastRow, lastColumn);
+    dataRange.clear({ commentsOnly: true, contentsOnly: true, formatOnly: true, validationsOnly: true });
+
+    sheet.getRange(2, 1, updatedDataMatrix.length, updatedDataMatrix[0].length).setValues(updatedDataMatrix);
+    SpreadsheetApp.flush()
   }
 
   
@@ -123,7 +143,6 @@ class SpreadsheetManager {
    * @param {Object} newValue Relação campo-valor-tipo com dados a ser atualizados
    * @param {String} newValue.field Campo a ser atualizado
    * @param {String} newValue.value Valor atualizado
-   * @param {String} newValue.link Link caso seja type link
    * @param {String} newValue.type Tipo do valor. Um dentre: [numberValue, stringValue, boolValue, formulaValue, note]
    * @param {Boolean} fromLocking Verificar se requisição origina-se no método tryLock/unlock
    * @returns {Promise<Boolean>} True: Se algum registro foi encontrado e atualizado. False: caso contrario
