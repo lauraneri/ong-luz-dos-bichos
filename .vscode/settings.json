@@ -3,7 +3,6 @@
   "editor.codeActionsOnSave": {
       "source.fixAll.eslint": "always",
   },
-  "eslint.validate": ["javascript"],
   "jest.runMode": "on-demand",
   
   "workbench.colorCustomizations": {
