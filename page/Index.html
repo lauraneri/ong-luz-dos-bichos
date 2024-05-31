@@ -2,26 +2,58 @@
 <html>
   <head>
     <base target="_top">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
     <?!= include("page_css");  ?>
   </head>
   <body>
-    <form id="myForm" onsubmit="handleFormSubmit(this)">
-      <div class="form-row">
-        <label>Nome</label><input name="Nome" type="text" />
-      </div>
-      <div class="form-row">
-        <label>Idade</label><input name="Idade" type="text" /><br>
-      </div>
-      <div class="form-row">
-        <label>Telefone</label><input name="Telefone" type="text" /><br>
-      </div>
-      <div class="form-row">
-        <label>Disponibilidade</label><input name="Disponibilidade" type="text" /><br>
-      </div>
-      <input type="submit" value="Cadastrar/Atualizar" />
-    </form>
-    <button id="btnFetch" onclick="handleFormFetchUserInfo(this)">Consultar</button>
+    <div class="container form">
+      <div class="row">
+        <form class="col s12">
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">account_circle</i>
+              <input type="text" class="validate" id="nomeInput">
+              <label for="icon_prefix">Nome Completo</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s4">
+              <i class="material-icons prefix">access_time</i>
+              <input type="text" class="validate" id="idadeInput">
+              <label for="icon_prefix">Idade</label>
+            </div>
+            <div class="input-field col s8">
+              <i class="material-icons prefix">phone</i>
+              <input type="tel" class="validate" id="telefoneInput">
+              <label for="icon_telephone">Telefone</label>
+            </div>
+          </div>
+          <div class="row">
+            <div class="input-field col s12">
+              <i class="material-icons prefix">event</i>
+              <input type="text" class="validate" id="disponibilidadeInput">
+              <label for="icon_prefix">Disponibilidade</label>
+            </div>
+          </div>
 
+          <div class="col s6 center-align">
+            <button class="btn waves-effect waves-light" type="search" name="action" onclick="handleFormFetchUserInfo()">Consultar
+            <i class="material-icons right">search</i>
+            </button>
+          </div>
+  
+          <div class="col s6 center-align">
+            <button class="btn waves-effect waves-light" type="submit" name="action" onclick="handleFormSubmit()">Submeter
+            <i class="material-icons right">send</i>
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
     <?!= include("page_js");  ?>
  </body>
 </html>
