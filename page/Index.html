@@ -1,13 +1,27 @@
 <!DOCTYPE html>
 <html>
-<head>
-<title>Page Title</title>
-</head>
-<body>
+  <head>
+    <base target="_top">
+    <?!= include("page_css");  ?>
+  </head>
+  <body>
+    <form id="myForm" onsubmit="handleFormSubmit(this)">
+      <div class="form-row">
+        <label>Nome</label><input name="Nome" type="text" />
+      </div>
+      <div class="form-row">
+        <label>Idade</label><input name="Idade" type="text" /><br>
+      </div>
+      <div class="form-row">
+        <label>Telefone</label><input name="Telefone" type="text" /><br>
+      </div>
+      <div class="form-row">
+        <label>Disponibilidade</label><input name="Disponibilidade" type="text" /><br>
+      </div>
+      <input type="submit" value="Cadastrar/Atualizar" />
+    </form>
+    <button id="btnFetch" onclick="handleFormFetchUserInfo(this)">Consultar</button>
 
-<h1>My First Heading</h1>
-<p>My first paragraph.</p>
-<button onclick="doPost()">Click me</button>
-
-</body>
+    <?!= include("page_js");  ?>
+ </body>
 </html>
