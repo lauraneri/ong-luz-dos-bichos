@@ -10,22 +10,32 @@
   }
   window.addEventListener('load', preventFormSubmit);
 
-  function handleFormSubmit(formObject) {
-    const res = google.script.run.pessoalRegistrarOuAtualizarCadastro(formObject)
-    document.getElementById('output').textContent=res
+  function handleFormSubmit() {
+    const userInfo = {}
+
+    userInfo.Nome = document.getElementById('nomeInput').value
+    userInfo.Idade = document.getElementById('idadeInput').value
+    userInfo.Telefone = document.getElementById('telefoneInput').value
+    userInfo.Disponibilidade = document.getElementById('disponibilidadeInput').value
+
+    const res = google.script.run
+      .withSuccessHandler(response => {
+        alert(response)
+    })
+      .pessoalRegistrarOuAtualizarCadastro(userInfo)
+
   }
 
   function handleFormFetchUserInfo() {
-    const res = google.script.run.withSuccessHandler(callPessoalObterCadastro()).withSuccessHandler((result) => {
-      console.log(result)
-      document.getElementById("output").textContent="newtext";
+    const res = google.script.run
+      .withSuccessHandler(data => {
+        document.getElementById('nomeInput').textContent = data['Nome']
+        document.getElementById('idadeInput').textContent = data['Idade']
+        document.getElementById('telefoneInput').textContent = data['Telefone']
+        document.getElementById('disponibilidadeInput').textContent = data['Disponibilidade']
+        alert('Dados obtidos com sucesso!')
     })
-    console.log('bb')
-    console.log(res)
-  }
-
-  function callPessoalObterCadastro() {
-    return google.script.run.pessoalObterCadastro();
+      .pessoalObterCadastro()
   }
 
 </script>
