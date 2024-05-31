@@ -1,0 +1,31 @@
+<script>
+  // Prevent forms from submitting.
+  function preventFormSubmit() {
+    var forms = document.querySelectorAll('form');
+    for (var i = 0; i < forms.length; i++) {
+      forms[i].addEventListener('submit', function(event) {
+        event.preventDefault();
+      });
+    }
+  }
+  window.addEventListener('load', preventFormSubmit);
+
+  function handleFormSubmit(formObject) {
+    const res = google.script.run.pessoalRegistrarOuAtualizarCadastro(formObject)
+    document.getElementById('output').textContent=res
+  }
+
+  function handleFormFetchUserInfo() {
+    const res = google.script.run.withSuccessHandler(callPessoalObterCadastro()).withSuccessHandler((result) => {
+      console.log(result)
+      document.getElementById("output").textContent="newtext";
+    })
+    console.log('bb')
+    console.log(res)
+  }
+
+  function callPessoalObterCadastro() {
+    return google.script.run.pessoalObterCadastro();
+  }
+
+</script>
