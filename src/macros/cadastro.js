@@ -2,23 +2,11 @@ const Configs = require("../configs/configs");
 const Pessoal = require("../models/pessoal");
 const PlanilhaAtiva = require("../models/planilhaAtiva");
 
-
-async function pessoalRegistrarOuAtualizarCadastro() {
+async function pessoalRegistrarOuAtualizarCadastro(formData) {
   try {
-
+    console.log(formData)
     const configs = new Configs()
     const userEmail = configs.getUserEmail()
-
-    const planilhaAtiva = new PlanilhaAtiva('Cadastro')
-    const dadosAtiva = await planilhaAtiva.read()
-    
-    if (dadosAtiva.length !== 1)
-      throw new Error('Permitido apenas um cadastro por requisição')
-
-    if (Object.values(dadosAtiva[0]).some(item => !item)) 
-      throw new Error('Todos os campos disponíveis são obrigatórios')
-
-    const dadosJson = dadosAtiva[0]
 
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
@@ -26,21 +14,20 @@ async function pessoalRegistrarOuAtualizarCadastro() {
     const emailCadastrado = dadosMembros.some(item => item['Email'] === userEmail)
     if (emailCadastrado) {
       const filter = {'Email': userEmail}
-      for (const campo of Object.keys(dadosJson)) {
+      for (const campo of Object.keys(formData)) {
         await membros.update(dadosMembros, filter ,{
-          value: `${dadosJson[campo]}`,
+          value: `${formData[campo]}`,
           field: campo,
           type: 'stringValue'
         })
       }
 
-      console.log(`Cadastro atualizado com sucesso para o email ${userEmail}`)
-      return;
+      return `Cadastro atualizado com sucesso para o email ${userEmail}`;
     }
 
-    dadosJson['Email'] = userEmail
-    await membros.append([dadosJson])
-    console.log(`Cadastro registrado com sucesso para o email ${userEmail}`)
+    formData['Email'] = userEmail
+    await membros.append([formData])
+    return `Cadastro registrado com sucesso para o email ${userEmail}`
 
   } catch(error) {
     console.error(error.message)
@@ -54,17 +41,14 @@ async function pessoalObterCadastro() {
     const configs = new Configs()
     const userEmail = configs.getUserEmail()
 
-    const planilhaAtiva = new PlanilhaAtiva('Cadastro')
-
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
 
     const registroSolicitado = dadosMembros.filter(item => item['Email'] === userEmail)
     if (!registroSolicitado[0]) throw new Error(`Cadastro inexistente para o email ${userEmail}`)
 
-    
-    await planilhaAtiva.overwrite(registroSolicitado)
     console.log(`Cadastro recuperado com sucesso para o email ${userEmail}`)
+    return registroSolicitado[0]
 
   } catch(error) {
     console.error(error.message)
