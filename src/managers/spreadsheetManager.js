@@ -159,7 +159,7 @@ class SpreadsheetManager {
 
     if (!newValue.type) throw new TypeError('Parametro "newValue.type" obrigatorio');
 
-    const allowedTypes = ['numberValue', 'stringValue', 'boolValue', 'formulaValue', 'note', 'link'];
+    const allowedTypes = ['numberValue', 'stringValue', 'boolValue', 'formulaValue'];
     if (!allowedTypes.some((elem) => elem === newValue.type))
       throw new TypeError(
         `Parametro "newValue.type" deve ser um dentre: ${allowedTypes}`

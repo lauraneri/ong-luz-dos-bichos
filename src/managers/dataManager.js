@@ -14,7 +14,7 @@ class DataManager {
     if (data.length === 0) return [[]];
 
     if (!data.every(item => DataManager.isObject(item))) 
-      throw new TypeError('Elementos de "data" devem ser do tipo Array');
+      throw new TypeError('Elementos de "data" devem ser do tipo Object');
     
     const header = Object.keys(data[0]);
     const array2D = data.map((elemJson) => {
