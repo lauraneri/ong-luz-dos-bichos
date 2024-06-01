@@ -1,10 +1,8 @@
-const Configs = require("../configs/configs");
-const Pessoal = require("../models/pessoal");
-const PlanilhaAtiva = require("../models/planilhaAtiva");
+const Configs = require("../../configs/configs");
+const Pessoal = require("../../models/pessoal");
 
 async function pessoalRegistrarOuAtualizarCadastro(formData) {
   try {
-    console.log(formData)
     const configs = new Configs()
     const userEmail = configs.getUserEmail()
 

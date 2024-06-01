@@ -40,8 +40,20 @@ class DataManager {
     if (!Array.isArray(arrayData)) return [];
 
     const header = arrayData[0];
-    return arrayData.slice(1)
-      .map((row) => Object.fromEntries(row.map((item, id) => [header[id], item])));
+
+    if (arrayData.length === 0) {
+      const mapHeaderValue = header.map((_, index) => [header[index], '']);
+      return [Object.fromEntries(mapHeaderValue)];
+    }
+
+    const arrayJson = arrayData.splice(1).map((line) => {
+      const filledLine = Array(header.length)
+        .fill()
+        .map((_, index) => (line[index] ? line[index] : ''));
+      const mapHeaderValue = filledLine.map((value, index) => [header[index], value]);
+      return Object.fromEntries(mapHeaderValue);
+    });
+    return arrayJson;
   }
 
   /**
