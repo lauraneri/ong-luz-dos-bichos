@@ -13,14 +13,23 @@
   function handleFormSubmit() {
     const userInfo = {}
 
-    userInfo.Nome = document.getElementById('nomeInput').value
-    userInfo.Idade = document.getElementById('idadeInput').value
-    userInfo.Telefone = document.getElementById('telefoneInput').value
-    userInfo.Disponibilidade = document.getElementById('disponibilidadeInput').value
+    const nomeInput = document.getElementById('nomeInput')
+    const idadeInput = document.getElementById('idadeInput')
+    const telefoneInput = document.getElementById('telefoneInput')
+    const disponibilidadeInput = document.getElementById('disponibilidadeInput')
+
+    userInfo.Nome = nomeInput.value
+    userInfo.Idade = idadeInput.value
+    userInfo.Telefone = telefoneInput.value
+    userInfo.Disponibilidade = disponibilidadeInput.value
 
     const res = google.script.run
       .withSuccessHandler(response => {
-        alert(response)
+        nomeInput.value = null
+        idadeInput.value = null
+        telefoneInput.value = null
+        disponibilidadeInput.value = null
+        M.toast({html: response, classes: 'rounded'});
     })
       .pessoalRegistrarOuAtualizarCadastro(userInfo)
 
@@ -29,11 +38,13 @@
   function handleFormFetchUserInfo() {
     const res = google.script.run
       .withSuccessHandler(data => {
-        document.getElementById('nomeInput').textContent = data['Nome']
-        document.getElementById('idadeInput').textContent = data['Idade']
-        document.getElementById('telefoneInput').textContent = data['Telefone']
-        document.getElementById('disponibilidadeInput').textContent = data['Disponibilidade']
-        alert('Dados obtidos com sucesso!')
+        document.getElementById('nomeInput').value = data['Nome']
+        document.getElementById('idadeInput').value = data['Idade']
+        document.getElementById('telefoneInput').value = data['Telefone']
+        document.getElementById('disponibilidadeInput').value = data['Disponibilidade']
+
+        M.updateTextFields();
+        M.toast({html: 'Dados consultados com sucesso!', classes: 'rounded'});
     })
       .pessoalObterCadastro()
   }
