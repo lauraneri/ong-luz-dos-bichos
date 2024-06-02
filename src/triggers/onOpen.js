@@ -3,6 +3,8 @@ function onOpen() {
 
   ui.createMenu('Pessoal')
     .addItem('1. Exibir disponibilidades', 'pessoalExibirDisponibilidades')
+    .addSeparator()
+    .addItem('2. Obter eventos semanais', 'pessoalObterEventosSemanais')
     .addToUi();
 
   ui.createMenu('Animais')
