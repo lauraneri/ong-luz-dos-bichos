@@ -9,9 +9,9 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
 
-    const emailCadastrado = dadosMembros.some(item => item['Email'] === userEmail)
+    const emailCadastrado = dadosMembros.some(item => item['EMAIL'] === userEmail)
     if (emailCadastrado) {
-      const filter = {'Email': userEmail}
+      const filter = {'EMAIL': userEmail}
       for (const campo of Object.keys(formData)) {
         await membros.update(dadosMembros, filter ,{
           value: `${formData[campo]}`,
@@ -23,7 +23,7 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
       return `Cadastro atualizado com sucesso para o email ${userEmail}`;
     }
 
-    formData['Email'] = userEmail
+    formData['EMAIL'] = userEmail
     await membros.append([formData])
     return `Cadastro registrado com sucesso para o email ${userEmail}`
 
