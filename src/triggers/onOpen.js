@@ -5,6 +5,8 @@ function onOpen() {
     .addItem('1. Exibir disponibilidades', 'pessoalExibirDisponibilidades')
     .addSeparator()
     .addItem('2. Obter eventos semanais', 'pessoalObterEventosSemanais')
+    .addSeparator()
+    .addItem('3. Atibuir responsáveis', 'pessoalAtribuirResponsaveisPorAtividade')
     .addToUi();
 
   ui.createMenu('Animais')

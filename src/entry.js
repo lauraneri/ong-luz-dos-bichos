@@ -7,7 +7,7 @@ const include = require('./triggers/loadPage');
 
 const {pessoalRegistrarOuAtualizarCadastro, pessoalObterCadastro} = require('./macros/pessoal/cadastro')
 
-const {pessoalExibirDisponibilidades, pessoalObterEventosSemanais} = require('./macros/pessoal/disponibilidade')
+const {pessoalExibirDisponibilidades, pessoalObterEventosSemanais, pessoalAtribuirResponsaveisPorAtividade} = require('./macros/pessoal/disponibilidade')
 
 global.SpreadsheetManager = SpreadsheetManager;
 global.DataManager = DataManager;
@@ -22,5 +22,6 @@ global.pessoalObterCadastro = pessoalObterCadastro;
 
 global.pessoalExibirDisponibilidades = pessoalExibirDisponibilidades;
 global.pessoalObterEventosSemanais = pessoalObterEventosSemanais;
+global.pessoalAtribuirAtividades = pessoalAtribuirResponsaveisPorAtividade;
 
 
