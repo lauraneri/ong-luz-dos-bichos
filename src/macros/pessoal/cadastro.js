@@ -28,7 +28,6 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
     return `Cadastro registrado com sucesso para o email ${userEmail}`
 
   } catch(error) {
-    console.error(error.message)
     console.error(error.stack)
     throw error
   }
@@ -42,14 +41,13 @@ async function pessoalObterCadastro() {
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
 
-    const registroSolicitado = dadosMembros.filter(item => item['Email'] === userEmail)
+    const registroSolicitado = dadosMembros.filter(item => item['EMAIL'] === userEmail)
     if (!registroSolicitado[0]) throw new Error(`Cadastro inexistente para o email ${userEmail}`)
 
     console.log(`Cadastro recuperado com sucesso para o email ${userEmail}`)
     return registroSolicitado[0]
 
   } catch(error) {
-    console.error(error.message)
     console.error(error.stack)
     throw error
   }
