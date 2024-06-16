@@ -6,7 +6,9 @@ function onOpen() {
     .addSeparator()
     .addItem('2. Obter eventos semanais', 'pessoalObterEventosSemanais')
     .addSeparator()
-    .addItem('3. Atibuir responsáveis', 'pessoalAtribuirResponsaveisPorAtividade')
+    .addItem('3. Atribuir responsáveis', 'pessoalAtribuirResponsaveisPorAtividade')
+    .addSeparator()
+    .addItem('4. Adicionar responsáveis ao calendário', 'pessoalInserirResponsavelCalendario')
     .addToUi();
 
   ui.createMenu('Animais')

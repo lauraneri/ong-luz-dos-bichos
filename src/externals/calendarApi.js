@@ -44,6 +44,17 @@ class CalendarApi {
     }
     return eventsBlocks
   }
+
+  async insertAttendees(emails) {
+    const request = {
+      calendarId: this.calendar,
+      sendNotifications: emails,
+      requestBody: {
+        attendees: emails
+      }
+    }
+    this.calendar.events.update(request)
+  }
 }
 
 module.exports = CalendarApi

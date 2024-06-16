@@ -13,8 +13,8 @@ class PlanilhaAtiva {
     this.spreadsheetManager.setSheetName(newSheetName)
   }
 
-  async read() {
-    return await this.spreadsheetManager.read()
+  async read(as = 'json') {
+    return await this.spreadsheetManager.read(as)
   }
 
   async append(data) {
