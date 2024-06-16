@@ -1,6 +1,6 @@
 const Configs = require("../../configs/configs");
 const Pessoal = require("../../models/pessoal");
-const CalendarManager = require("../../managers/calandarManager")
+const CalendarManager = require("../../managers/calendarManager")
 
 async function pessoalExibirDisponibilidades() {
   try {
@@ -26,10 +26,10 @@ async function pessoalExibirDisponibilidades() {
       'Domingo':'DOM.'
     }
 
-    const horarios = diagramaDisponibDados.map(item => item['HORÁRIO'])
+    const periodos = diagramaDisponibDados.map(item => item['PERÍODO'])
 
     const relacaoHoraDiaMembro = Object.fromEntries(
-      horarios.map(hora => [hora, 
+      periodos.map(periodo => [periodo, 
         Object.fromEntries(diasSemana.map(dia => [dia, []]))]
       )
     )
@@ -37,7 +37,7 @@ async function pessoalExibirDisponibilidades() {
     for (const membro of membrosDados) {
       membro['DISPONIBILIDADE'].split(';').map(item => {
         const diaHora = item.split(',')
-        relacaoHoraDiaMembro[diaHora[1]][shortDiasSemana[diaHora[0]]].push(membro['NOME'])
+        relacaoHoraDiaMembro[diaHora[1]][shortDiasSemana[diaHora[0]]].push(membro['EMAIL'])
       })
     }
 
@@ -45,7 +45,7 @@ async function pessoalExibirDisponibilidades() {
       const hora = horaDiaMembro[0]
       const diasMembros = horaDiaMembro[1]
 
-      const filter = {'HORÁRIO': hora}
+      const filter = {'PERÍODO': hora}
 
       for (const dia of Object.keys(diasMembros)) {
         if (diasMembros[dia].length === 0) continue
@@ -71,16 +71,7 @@ async function pessoalObterEventosSemanais() {
 
     const calendarManager = new CalendarManager()
 
-    const diagramaTarefas = new Pessoal('Diagrama de Tarefas')
-    const diagramaTarefasDados = await diagramaTarefas.read()
-
     const atividades = new Pessoal('Atividades')
-
-    await diagramaTarefas.overwrite([{}])
-
-    const horarios = diagramaTarefasDados.map(item => Object.fromEntries([['HORÁRIO', item['HORÁRIO']]]))
-
-    await diagramaTarefas.append(horarios)
 
     const eventosDaSemana = await calendarManager.getUpcomingEvents()
 
@@ -88,22 +79,15 @@ async function pessoalObterEventosSemanais() {
 
     for (const evento of eventosDaSemana) {
       const startDate = new Date(evento['startDate'])
-      const diaSemana = startDate.toLocaleDateString('pt-BR', { weekday: 'short' }).toUpperCase()
-      const horario = `${startDate.getHours() + 1}h${startDate.getMinutes() || '00'}`
-
-      const filter = {'HORÁRIO': horario}
-      await diagramaTarefas.update(diagramaTarefasDados, filter, {
-        value: evento['summary'],
-        field: diaSemana,
-        type: 'stringValue'
-      })
 
       atividadesParaComplementar.push({
+        'ID EVENTO': evento['id'],
         'ATIVIDADE': evento['summary'],
         'DESCRIÇÃO': evento['description'],
+        'DIA DA SEMANA': startDate.toLocaleDateString('pt-BR', {weekday: "short"}).toUpperCase(),
         'LOCAL': evento['location'],
-        'DATA': evento['startDate'].toLocaleDateString('pt-BR'),
-        'HORA': evento['startDate'].toLocaleTimeString('pt-BR'),
+        'DATA': startDate.toLocaleDateString('pt-BR'),
+        'HORA': startDate.toLocaleTimeString('pt-BR'),
       })
     }
 
@@ -127,25 +111,44 @@ async function pessoalAtribuirResponsaveisPorAtividade() {
     const diagramaDisponib = new Pessoal('Diagrama de Disponibilidade')
     const diagramaDisponibDados = await diagramaDisponib.read()
 
-    const diagramaTarefas = new Pessoal('Diagrama de Tarefas')
-    const diagramaTarefasDados = await diagramaTarefas.read()
-
     const atividades = new Pessoal('Atividades')
     const atividadesDados = await atividades.read()
 
-    for (const linhaDiagTarefa of diagramaTarefasDados) {
-      
+    for (const atividade of atividadesDados) {
+      const hora = parseInt(atividade['HORA'].match(/\d{2}/))
+      const periodo = hora <= 12 ? 'Manhã' : hora <= 18 ? 'Tarde' : 'Noite'
+      const matchDisponivel = diagramaDisponibDados
+        .filter(item => item['PERÍODO'] === periodo)
+        .map(item => item[atividade['DIA DA SEMANA']])[0];
+
+      atividade['RESPONSÁVEL'] = matchDisponivel
+
+      await atividades.update(atividadesDados, 
+        {'DATA': atividade['DATA'], 'HORA': atividade['HORA']}, 
+        {field: 'RESPONSÁVEL', value: matchDisponivel, type: 'stringValue'})
     }
-
-
   } catch(error) {
     console.error(error.stack)
     throw error
   }
 }
 
+async function pessoalInserirResponsavelCalendario() {
+  const configs = new Configs()
+  const userEmail = configs.getUserEmail()
+  console.log(userEmail)
+
+  const calendarManager = new CalendarManager()
+
+  const atividades = new Pessoal('Atividades')
+  const atividadesDados = await atividades.read()
+
+  await calendarManager.insertAttendees(atividadesDados)
+}
+
 module.exports = {
   pessoalExibirDisponibilidades,
   pessoalObterEventosSemanais,
-  pessoalAtribuirResponsaveisPorAtividade
+  pessoalAtribuirResponsaveisPorAtividade,
+  pessoalInserirResponsavelCalendario
 }
