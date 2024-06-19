@@ -3,5 +3,3 @@ token.json
 credentials.json
 package-lock.json
 dist
-appsscript.json
-.clasp.json
