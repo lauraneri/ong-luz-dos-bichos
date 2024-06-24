@@ -9,6 +9,7 @@
 
 const util = require('util');
 const childProcess = require('child_process');
+const fs = require('fs');
 
 const run = util.promisify(childProcess.exec);
 
@@ -45,6 +46,18 @@ function getHelpInfo() {
   console.log(desc);
 }
 
+function switchClaspScript() {
+  const scriptId = {
+    "scriptId":"1OsAxwzXLH5KllHRxILprtzXcpeiJ2HYuVPeadluuXlN8ak-GeVnbfJnE",
+    "rootDir":"./dist"
+  }
+
+  fs.writeFileSync('.clasp.json', JSON.stringify(scriptId), (err) => {
+    if (err) throw err;
+  });
+}
+
+
 /**
  * @summary Função principal para execução de setup
  * @async
@@ -54,6 +67,8 @@ async function main() {
     getHelpInfo();
     return;
   }
+
+  switchClaspScript();
 
   const undeploy = `npx clasp push -f`;
   await execBash(undeploy);

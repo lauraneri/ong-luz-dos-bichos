@@ -20,7 +20,7 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
         })
       }
 
-      return `Cadastro TESTE atualizado com sucesso para o email ${userEmail}`;
+      return `Cadastro atualizado com sucesso para o email ${userEmail}`;
     }
 
     formData['EMAIL'] = userEmail
