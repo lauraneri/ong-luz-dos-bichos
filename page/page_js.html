@@ -46,7 +46,7 @@
         document.getElementById('disponibilidadeInput').value = data['DISPONIBILIDADE']
 
         M.updateTextFields();
-        M.toast({html: 'Dados consultados com sucesso!', classes: 'rounded'});
+        M.toast({html: `Dados consultados com sucesso para o email ${data['EMAIL']}`, classes: 'rounded'});
     }).withFailureHandler(data => {
       M.toast({html: data, classes: 'rounded'});
     })
