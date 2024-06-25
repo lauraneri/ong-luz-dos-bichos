@@ -258,6 +258,11 @@ class SpreadsheetManager {
     throw new TypeError('Parametro "sheetNames" deve ser do tipo Array<String> ou String');
   }
 
+  flush() {
+    if (this.local) return;
+    SpreadsheetApp.flush()
+  }
+
   getId() {
     return this.spreadsheetId;
   }

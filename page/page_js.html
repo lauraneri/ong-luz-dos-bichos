@@ -10,23 +10,84 @@
   }
   window.addEventListener('load', preventFormSubmit);
 
+  function validateContentInput(userInfo) {
+    console.log(userInfo)
+    if (!userInfo.EMAIL.match(/.*@.*\./)) {
+      M.toast({html: 'Campo "Email" inválido. Esperado: xxx@xx.xx', classes: 'rounded'});
+      return false
+    }
+
+    const weekDays = [
+      'Segunda-Feira', 
+      'Terça-Feira', 
+      'Quarta-Feira', 
+      'Quinta-Feira', 
+      'Sexta-Feira', 
+      'Sábado', 
+      'Domingo'
+    ]
+
+    const period = [ 'Manhã', 'Tarde', 'Noite' ]
+
+    const disponibWeekError = userInfo.DISPONIBILIDADE
+      .split(';').filter(item => !weekDays.includes(item.split(',')[0]))
+
+    const disponibPeriodError = userInfo.DISPONIBILIDADE
+      .split(';').filter(item => !period.includes(item.split(',')[1]))
+
+    if (disponibWeekError.length !== 0) {
+      M.toast({html: `Campo "Disponibilidade" inválido para ${disponibWeekError}. Esperado um dentre "Segunda-Feira, Terça-Feira, ..."`, classes: 'rounded'});
+      return false
+    }
+
+    if (disponibPeriodError.length !== 0) {
+      M.toast({html: `Campo "Disponibilidade" inválido para ${disponibPeriodError}. Esperado um dentre "Manhã, Tarde, Noite"`, classes: 'rounded'});
+      return false
+    }
+
+    return true;
+  }
+
+  function validateRequiredInput(userInfo) {
+    const mapFields = {
+      NOME: 'Nome',
+      EMAIL: 'Email',
+      DISPONIBILIDADE: 'Disponibilidade',
+      TELEFONE: 'Telefone'
+    }
+
+    const undefField = Object.keys(mapFields).filter(item => !userInfo[item])
+    if (undefField.length !== 0) {
+      M.toast({html: `Campo ${undefField} obrigatório para envio`, classes: 'rounded'});
+      return false
+    }
+
+    return true;
+  }
+
   function handleFormSubmit() {
     const userInfo = {}
 
     const nomeInput = document.getElementById('nomeInput')
-    const idadeInput = document.getElementById('idadeInput')
+    const emailInput = document.getElementById('emailInput')
     const telefoneInput = document.getElementById('telefoneInput')
     const disponibilidadeInput = document.getElementById('disponibilidadeInput')
 
+    console.log(userInfo)
+
     userInfo.NOME = nomeInput.value
-    userInfo.IDADE = idadeInput.value
+    userInfo.EMAIL = emailInput.value
     userInfo.TELEFONE = telefoneInput.value
     userInfo.DISPONIBILIDADE = disponibilidadeInput.value
+
+    if (!validateRequiredInput(userInfo)) return;
+
+    if (!validateContentInput(userInfo)) return;
 
     const res = google.script.run
       .withSuccessHandler(response => {
         nomeInput.value = null
-        idadeInput.value = null
+        emailInput.value = null
         telefoneInput.value = null
         disponibilidadeInput.value = null
         M.toast({html: response, classes: 'rounded'});
@@ -38,10 +99,25 @@
   }
 
   function handleFormFetchUserInfo() {
+    const emailInput = document.getElementById('emailInput')
+    const email = emailInput.value
+    
+    console.log(email)
+
+    if (!email) {
+      M.toast({html: 'Campo "Email" obrigatório para consulta', classes: 'rounded'});
+      return
+    }
+
+    if (!email.match(/.*@.*\./)) {
+      M.toast({html: 'Campo "Email" inválido. Esperado: xxx@xx.xx', classes: 'rounded'});
+      return false
+    }
+
+    
     const res = google.script.run
       .withSuccessHandler(data => {
         document.getElementById('nomeInput').value = data['NOME']
-        document.getElementById('idadeInput').value = data['IDADE']
         document.getElementById('telefoneInput').value = data['TELEFONE']
         document.getElementById('disponibilidadeInput').value = data['DISPONIBILIDADE']
 
@@ -50,7 +126,7 @@
     }).withFailureHandler(data => {
       M.toast({html: data, classes: 'rounded'});
     })
-      .pessoalObterCadastro()
+      .pessoalObterCadastro(email)
   }
 
 </script>

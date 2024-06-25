@@ -3,11 +3,10 @@ const Pessoal = require("../../models/pessoal");
 
 async function pessoalRegistrarOuAtualizarCadastro(formData) {
   try {
-    const configs = new Configs()
-    const userEmail = configs.getUserEmail()
-
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
+
+    const userEmail = formData.EMAIL
 
     const emailCadastrado = dadosMembros.some(item => item['EMAIL'] === userEmail)
     if (emailCadastrado) {
@@ -25,6 +24,7 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
 
     formData['EMAIL'] = userEmail
     await membros.append([formData])
+    membros.flush()
     return `Cadastro registrado com sucesso para o email ${userEmail}`
 
   } catch(error) {
@@ -33,10 +33,9 @@ async function pessoalRegistrarOuAtualizarCadastro(formData) {
   }
 }
 
-async function pessoalObterCadastro() {
+async function pessoalObterCadastro(emailInput) {
   try {
-    const configs = new Configs()
-    const userEmail = configs.getUserEmail()
+    const userEmail = emailInput
 
     const membros = new Pessoal('Membros')
     const dadosMembros = await membros.read();
@@ -45,6 +44,7 @@ async function pessoalObterCadastro() {
     if (!registroSolicitado[0]) throw new Error(`Cadastro inexistente para o email ${userEmail}`)
 
     console.log(`Cadastro recuperado com sucesso para o email ${userEmail}`)
+    
     return registroSolicitado[0]
 
   } catch(error) {
