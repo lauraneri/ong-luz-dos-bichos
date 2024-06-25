@@ -27,7 +27,7 @@ jobs:
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Login Clasp
-      run: npx clasp login
+      run: npx clasp login --creds ${{ secrets.GCP_CREDENTIALS }}
       
     - name: Deploy to Apps Script library
       run: npm run deploy
