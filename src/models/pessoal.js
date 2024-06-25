@@ -29,6 +29,10 @@ class Pessoal {
     return await this.spreadsheetManager.update(data, filters, newValue)
   }
 
+  flush() {
+    this.spreadsheetManager.flush
+  }
+
 }
 
 module.exports = Pessoal;

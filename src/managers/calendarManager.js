@@ -149,9 +149,10 @@ class CalendarManager {
     for (const atividade of atividades) {
       var event = CalendarApp.getEventById(atividade['ID EVENTO']);  
       
-      const emailsGuests = atividade['RESPONSÁVEL'].split(',').filter(item => item)
-
-      emailsGuests.map(email => event.addGuest(email))
+      const emailsGuests = atividade['RESPONSÁVEL']
+      if (!emailsGuests) continue
+      console.log(atividade['ID EVENTO'])
+      event.addGuest(emailsGuests)
 
       const emailStr = `
         <h3> Atividade Disponibilizada </h3>
@@ -165,7 +166,7 @@ class CalendarManager {
 
       `;
 
-      emailsGuests.map(email => this.notify(email, atividade['ATIVIDADE'], emailStr))
+      // emailsGuests.map(email => this.notify(email, atividade['ATIVIDADE'], emailStr))
     }
   }
 }
