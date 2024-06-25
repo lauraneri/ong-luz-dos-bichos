@@ -31,6 +31,9 @@ jobs:
       
     - name: Login Clasp
       run: npx clasp login --creds ${{ secrets.GCP_CREDENTIALS }}
+
+    - name: Clone Google Apps Script project
+      run: clasp clone 1WBUXeqGEOI2OVBXfYvC-X8igBIcc-o4Af6VegGuy26u-w0vpoU-IIO-d
       
     - name: Deploy to Apps Script library
       run: npm run deploy
