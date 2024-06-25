@@ -168,7 +168,7 @@ class CalendarManager {
 
       `;
 
-      emailsGuests.map(email => this.notify(email, atividade['ATIVIDADE'], emailStr))
+      this.notify(emailsGuests, atividade['ATIVIDADE'], emailStr)
     }
   }
 }
