@@ -26,7 +26,7 @@ jobs:
       
     - name: Clasp config
       run: |
-        echo {\"scriptId\":\"1WBUXeqGEOI2OVBXfYvC-X8igBIcc-o4Af6VegGuy26u-w0vpoU-IIO-d\",\"rootDir\":\"$PWD\",\"projectId\":\"arvore-de-folhas\"}" > .clasp.json
+        echo "{\"scriptId\":\"1WBUXeqGEOI2OVBXfYvC-X8igBIcc-o4Af6VegGuy26u-w0vpoU-IIO-d\",\"rootDir\":\"$PWD\",\"projectId\":\"arvore-de-folhas\"}" > .clasp.json
         
     - uses: google-github-actions/setup-gcloud@v0.2.0
       with:
