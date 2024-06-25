@@ -26,6 +26,9 @@ jobs:
         service_account_key: ${{ secrets.GCP_CREDENTIALS }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
+    - name: Login Clasp
+      run: npx clasp login
+      
     - name: Deploy to Apps Script library
       run: npm run deploy
 
