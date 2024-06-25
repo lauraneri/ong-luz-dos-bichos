@@ -21,11 +21,10 @@ jobs:
     - name: Install dependencies
       run: npm install
       
-    - name: Authenticate with Google
-      env:
-        ACCESS_TOKEN: ${{ secrets.GOOGLE_ACCESS_TOKEN }}
-      run: |
-        echo $ACCESS_TOKEN | gcloud auth activate-service-account --key-file=-
+    - uses: google-github-actions/setup-gcloud@v0.2.0
+      with:
+        service_account_key: ${{ secrets.GCP_CREDENTIALS }}
+        project_id: ${{ secrets.GCP_PROJECT_ID }}
 
     - name: Deploy to Apps Script library
       run: npm run deploy
