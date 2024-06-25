@@ -26,15 +26,12 @@ jobs:
         service_account_key: ${{ secrets.GCP_CREDENTIALS }}
         project_id: ${{ secrets.GCP_PROJECT_ID }}
 
-    - name: Login Clasp
-      run: npx clasp login --creds ${{ secrets.GCP_CREDENTIALS }}
-
     - name: Clasp config
       run: |
         echo {\"scriptId\":\"1WBUXeqGEOI2OVBXfYvC-X8igBIcc-o4Af6VegGuy26u-w0vpoU-IIO-d\",\"rootDir\":\"$PWD\",\"projectId\":\"arvore-de-folhas\"}" > .clasp.json
-        
-    - name: Deploy to Google Apps Script
-      run: clasp push --rootDir ./dist
+      
+    - name: Login Clasp
+      run: npx clasp login --creds ${{ secrets.GCP_CREDENTIALS }}
       
     - name: Deploy to Apps Script library
       run: npm run deploy
