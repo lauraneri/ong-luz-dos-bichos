@@ -17,13 +17,17 @@ jobs:
       uses: actions/setup-node@v4
       with:
         node-version: '20' 
-
+        
     - name: Install dependencies
       run: npm install
 
     - name: Install clasp
       run: npm install @google/clasp@2.4.0
       
+    - name: Clasp config
+      run: |
+        echo {\"scriptId\":\"1WBUXeqGEOI2OVBXfYvC-X8igBIcc-o4Af6VegGuy26u-w0vpoU-IIO-d\",\"rootDir\":\"$PWD\",\"projectId\":\"arvore-de-folhas\"}" > .clasp.json
+        
     - uses: google-github-actions/setup-gcloud@v0.2.0
       with:
         service_account_key: ${{ secrets.GCP_CREDENTIALS }}
