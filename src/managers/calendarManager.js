@@ -145,13 +145,15 @@ class CalendarManager {
     if (this.local) {
       return
     }
+        
+    const usrEmail = Session.getActiveUser().getEmail()
+    const calendar = CalendarApp.getCalendarById(usrEmail)
 
     for (const atividade of atividades) {
-      var event = CalendarApp.getEventById(atividade['ID EVENTO']);  
+      const event = calendar.getEventById(atividade['ID EVENTO']);  
       
       const emailsGuests = atividade['RESPONSÁVEL']
       if (!emailsGuests) continue
-      console.log(atividade['ID EVENTO'])
       event.addGuest(emailsGuests)
 
       const emailStr = `
