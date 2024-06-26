@@ -17,6 +17,11 @@
       return false
     }
 
+    if (!userInfo.TELEFONE.match(/\(\d{2}\)\d{9}/)) {
+      M.toast({html: 'Campo "Telefone" inválido. Esperado: (xx)xxxxxxxxx', classes: 'rounded'});
+      return false
+    }
+
     const weekDays = [
       'Segunda-Feira', 
       'Terça-Feira', 
